@@ -1,0 +1,3 @@
+-keep class com.flagquest.app.data.remote.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*

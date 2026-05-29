@@ -1,0 +1,19 @@
+# Build
+build/
+.gradle/
+app/build/
+
+# Local config
+local.properties
+*.local.properties
+
+# IDE
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+*.iml
+
+# Keys
+*.jks
+*.keystore
+google-services.json

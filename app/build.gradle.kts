@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
-    // alias(libs.plugins.google.services)  // À activer quand google-services.json est ajouté
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -78,11 +78,11 @@ dependencies {
     // Image loading
     implementation(libs.coil.compose)
 
-    // Firebase - À activer quand google-services.json est ajouté
-    // implementation(platform(libs.firebase.bom))
-    // implementation(libs.firebase.auth)
-    // implementation(libs.firebase.firestore)
-    // implementation(libs.play.services.auth)
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.play.services.auth)
 
     // DataStore
     implementation(libs.datastore.preferences)

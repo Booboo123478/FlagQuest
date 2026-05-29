@@ -5,12 +5,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.flagquest.app.ui.screens.AuthScreen
 import com.flagquest.app.ui.screens.HomeScreen
 import com.flagquest.app.ui.screens.QuizScreen
 import com.flagquest.app.ui.screens.ResultScreen
 import com.flagquest.app.ui.screens.ExploreScreen
+import com.google.firebase.auth.FirebaseAuth
 
 sealed class Screen(val route: String) {
+    object Auth : Screen("auth")
     object Home : Screen("home")
     object Quiz : Screen("quiz")
     object Result : Screen("result/{score}/{total}") {
@@ -21,7 +24,20 @@ sealed class Screen(val route: String) {
 
 @Composable
 fun FlagQuestNavHost(navController: NavHostController = rememberNavController()) {
-    NavHost(navController = navController, startDestination = Screen.Home.route) {
+    val startDestination = if (FirebaseAuth.getInstance().currentUser != null)
+        Screen.Home.route else Screen.Auth.route
+
+    NavHost(navController = navController, startDestination = startDestination) {
+
+        composable(Screen.Auth.route) {
+            AuthScreen(
+                onAuthSuccess = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Auth.route) { inclusive = true }
+                    }
+                }
+            )
+        }
 
         composable(Screen.Home.route) {
             HomeScreen(

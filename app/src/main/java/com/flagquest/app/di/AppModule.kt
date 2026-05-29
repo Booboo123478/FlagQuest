@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.flagquest.app.data.local.AppDatabase
 import com.flagquest.app.data.local.CountryDao
 import com.flagquest.app.data.remote.CountryApiService
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,4 +50,12 @@ object AppModule {
 
     @Provides
     fun provideCountryDao(db: AppDatabase): CountryDao = db.countryDao()
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
 }

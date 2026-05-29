@@ -5,7 +5,7 @@ import retrofit2.http.Path
 
 interface CountryApiService {
 
-    @GET("v3.1/all?fields=cca2,name,capital,region,flags,population,area,languages,currencies")
+    @GET("v3.1/all?fields=cca2,name,capital,region,subregion,flags,population,area,languages,currencies")
     suspend fun getAllCountries(): List<CountryDto>
 
     @GET("v3.1/alpha/{code}")

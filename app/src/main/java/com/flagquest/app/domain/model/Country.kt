@@ -4,7 +4,8 @@ data class Country(
     val code: String,        // ISO 3166-1 alpha-2  e.g. "FR"
     val name: String,        // "France"
     val capital: String,
-    val region: String,
+    val region: String,      // "Europe"
+    val subregion: String,   // "Western Europe"
     val flagUrl: String,     // SVG/PNG URL from restcountries.com
     val population: Long,
     val area: Double,

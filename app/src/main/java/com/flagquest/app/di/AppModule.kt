@@ -46,7 +46,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext ctx: Context): AppDatabase =
-        Room.databaseBuilder(ctx, AppDatabase::class.java, "flagquest.db").build()
+        Room.databaseBuilder(ctx, AppDatabase::class.java, "flagquest.db")
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Provides
     fun provideCountryDao(db: AppDatabase): CountryDao = db.countryDao()

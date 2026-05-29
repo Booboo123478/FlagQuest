@@ -1,7 +1,10 @@
 package com.flagquest.app.ui.screens
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flagquest.app.domain.model.QuizConfig
+import com.flagquest.app.domain.model.QuizMode
 import com.flagquest.app.domain.model.QuizQuestion
 import com.flagquest.app.domain.usecase.GenerateQuizUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,18 +29,21 @@ data class QuizUiState(
 
 @HiltViewModel
 class QuizViewModel @Inject constructor(
-    private val generateQuiz: GenerateQuizUseCase
+    private val generateQuiz: GenerateQuizUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(QuizUiState())
     val state: StateFlow<QuizUiState> = _state.asStateFlow()
 
-    init { loadQuiz() }
+    private var config = QuizConfig()
 
-    private fun loadQuiz() {
+    fun loadQuiz(quizConfig: QuizConfig) {
+        config = quizConfig
         viewModelScope.launch {
+            _state.value = QuizUiState(isLoading = true)
             try {
-                val questions = generateQuiz()
+                val questions = generateQuiz(config)
                 _state.value = QuizUiState(isLoading = false, questions = questions)
             } catch (e: Exception) {
                 _state.value = QuizUiState(isLoading = false, error = e.message)
@@ -65,5 +71,5 @@ class QuizViewModel @Inject constructor(
         }
     }
 
-    fun restart() { loadQuiz() }
+    fun restart() { loadQuiz(config) }
 }

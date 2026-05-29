@@ -28,4 +28,12 @@ class AuthRepository @Inject constructor(
     }
 
     fun signOut() = auth.signOut()
+
+    suspend fun updateEmail(newEmail: String) {
+        auth.currentUser?.verifyBeforeUpdateEmail(newEmail)?.await()
+    }
+
+    suspend fun updatePassword(newPassword: String) {
+        auth.currentUser?.updatePassword(newPassword)?.await()
+    }
 }

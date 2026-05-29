@@ -5,21 +5,26 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.flagquest.app.ui.screens.AuthScreen
-import com.flagquest.app.ui.screens.HomeScreen
-import com.flagquest.app.ui.screens.QuizScreen
-import com.flagquest.app.ui.screens.ResultScreen
-import com.flagquest.app.ui.screens.ExploreScreen
+import com.flagquest.app.domain.model.QuizConfig
+import com.flagquest.app.domain.model.QuizMode
+import com.flagquest.app.ui.screens.*
 import com.google.firebase.auth.FirebaseAuth
 
 sealed class Screen(val route: String) {
-    object Auth : Screen("auth")
-    object Home : Screen("home")
-    object Quiz : Screen("quiz")
-    object Result : Screen("result/{score}/{total}") {
+    object Auth    : Screen("auth")
+    object Home    : Screen("home")
+    object Setup   : Screen("setup")
+    object Quiz    : Screen("quiz")
+    object Result  : Screen("result/{score}/{total}") {
         fun createRoute(score: Int, total: Int) = "result/$score/$total"
     }
     object Explore : Screen("explore")
+    object Profile : Screen("profile")
+}
+
+// Config partagée entre Setup et Quiz via un simple objet en mémoire
+object QuizConfigHolder {
+    var config: QuizConfig = QuizConfig()
 }
 
 @Composable
@@ -41,13 +46,25 @@ fun FlagQuestNavHost(navController: NavHostController = rememberNavController())
 
         composable(Screen.Home.route) {
             HomeScreen(
-                onStartQuiz = { navController.navigate(Screen.Quiz.route) },
-                onExplore = { navController.navigate(Screen.Explore.route) }
+                onStartQuiz = { navController.navigate(Screen.Setup.route) },
+                onExplore   = { navController.navigate(Screen.Explore.route) },
+                onProfile   = { navController.navigate(Screen.Profile.route) }
+            )
+        }
+
+        composable(Screen.Setup.route) {
+            QuizSetupScreen(
+                onStartQuiz = { config ->
+                    QuizConfigHolder.config = config
+                    navController.navigate(Screen.Quiz.route)
+                },
+                onBack = { navController.popBackStack() }
             )
         }
 
         composable(Screen.Quiz.route) {
             QuizScreen(
+                config = QuizConfigHolder.config,
                 onFinished = { score, total ->
                     navController.navigate(Screen.Result.createRoute(score, total)) {
                         popUpTo(Screen.Quiz.route) { inclusive = true }
@@ -64,7 +81,7 @@ fun FlagQuestNavHost(navController: NavHostController = rememberNavController())
                 score = score,
                 total = total,
                 onPlayAgain = {
-                    navController.navigate(Screen.Quiz.route) {
+                    navController.navigate(Screen.Setup.route) {
                         popUpTo(Screen.Home.route)
                     }
                 },
@@ -74,6 +91,17 @@ fun FlagQuestNavHost(navController: NavHostController = rememberNavController())
 
         composable(Screen.Explore.route) {
             ExploreScreen(onBack = { navController.popBackStack() })
+        }
+
+        composable(Screen.Profile.route) {
+            ProfileScreen(
+                onBack = { navController.popBackStack() },
+                onSignOut = {
+                    navController.navigate(Screen.Auth.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }

@@ -2,6 +2,7 @@ package com.flagquest.app.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material3.*
@@ -14,9 +15,22 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun HomeScreen(
     onStartQuiz: () -> Unit,
-    onExplore: () -> Unit
+    onExplore: () -> Unit,
+    onProfile: () -> Unit
 ) {
-    Scaffold { padding ->
+    Scaffold(
+        topBar = {
+            @OptIn(ExperimentalMaterial3Api::class)
+            TopAppBar(
+                title = {},
+                actions = {
+                    IconButton(onClick = onProfile) {
+                        Icon(Icons.Default.AccountCircle, "Profil")
+                    }
+                }
+            )
+        }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

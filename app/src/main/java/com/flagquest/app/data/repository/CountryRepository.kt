@@ -6,8 +6,11 @@ import com.flagquest.app.data.local.toEntity
 import com.flagquest.app.data.remote.CountryApiService
 import com.flagquest.app.data.remote.toDomain
 import com.flagquest.app.domain.model.Country
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,21 +25,26 @@ class CountryRepository @Inject constructor(
     fun getCountriesByRegion(region: String): Flow<List<Country>> =
         dao.getCountriesByRegion(region).map { list -> list.map { it.toDomain() } }
 
-    suspend fun refreshCountries() {
+    suspend fun refreshCountries() = withContext(Dispatchers.IO) {
         val remote = api.getAllCountries()
         dao.insertAll(remote.map { it.toDomain().toEntity() })
     }
 
-    suspend fun ensureLoaded() {
+    suspend fun ensureLoaded() = withContext(Dispatchers.IO) {
         if (dao.count() == 0) refreshCountries()
     }
 
-    suspend fun getRandomCountries(n: Int): List<Country> {
-        // Pull all from DB, shuffle, take n
-        var result = emptyList<Country>()
-        dao.getAllCountries().collect { list ->
-            result = list.map { it.toDomain() }.shuffled().take(n)
-        }
-        return result
+    suspend fun getAllCountriesList(): List<Country> = withContext(Dispatchers.IO) {
+        dao.getAllCountries().first().map { it.toDomain() }
+    }
+
+    suspend fun getRegionsAndSubregions(): Map<String, List<String>> = withContext(Dispatchers.IO) {
+        dao.getAllCountries().first()
+            .map { it.toDomain() }
+            .groupBy { it.region }
+            .mapValues { (_, countries) ->
+                countries.map { it.subregion }.distinct().sorted()
+            }
+            .toSortedMap()
     }
 }

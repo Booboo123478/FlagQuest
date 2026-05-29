@@ -10,9 +10,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.flagquest.app.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +33,7 @@ fun ProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Mon Profil") },
+                title = { Text(stringResource(R.string.profile_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, "Retour")
@@ -72,7 +74,7 @@ fun ProfileScreen(
 
             if (state.updateSuccess) {
                 Text(
-                    text = "✅ Modifications enregistrées",
+                    text = stringResource(R.string.update_success),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge
                 )
@@ -86,7 +88,7 @@ fun ProfileScreen(
             ) {
                 Icon(Icons.Default.Edit, null)
                 Spacer(Modifier.width(8.dp))
-                Text("Modifier le profil")
+                Text(stringResource(R.string.btn_edit_profile))
             }
 
             OutlinedButton(
@@ -98,7 +100,7 @@ fun ProfileScreen(
             ) {
                 Icon(Icons.Default.Logout, null)
                 Spacer(Modifier.width(8.dp))
-                Text("Se déconnecter")
+                Text(stringResource(R.string.btn_sign_out))
             }
         }
     }
@@ -130,21 +132,21 @@ private fun EditProfileDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Modifier le profil") },
+        title = { Text(stringResource(R.string.edit_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Nouvel email") },
+                    label = { Text(stringResource(R.string.edit_new_email)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Nouveau mot de passe") },
-                    placeholder = { Text("Laisser vide pour ne pas changer") },
+                    label = { Text(stringResource(R.string.edit_new_password)) },
+                    placeholder = { Text(stringResource(R.string.edit_password_hint)) },
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
@@ -152,11 +154,11 @@ private fun EditProfileDialog(
                 OutlinedTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
-                    label = { Text("Confirmer le mot de passe") },
+                    label = { Text(stringResource(R.string.edit_confirm_password)) },
                     visualTransformation = PasswordVisualTransformation(),
                     isError = passwordMismatch,
                     supportingText = {
-                        if (passwordMismatch) Text("Les mots de passe ne correspondent pas")
+                        if (passwordMismatch) Text(stringResource(R.string.edit_password_mismatch))
                     },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
@@ -169,11 +171,11 @@ private fun EditProfileDialog(
                 enabled = !isLoading && !passwordMismatch && email.isNotBlank()
             ) {
                 if (isLoading) CircularProgressIndicator(modifier = Modifier.size(18.dp))
-                else Text("Enregistrer")
+                else Text(stringResource(R.string.btn_save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Annuler") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.btn_cancel)) }
         }
     )
 }

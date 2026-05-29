@@ -25,8 +25,13 @@ class ExploreViewModel @Inject constructor(
     private val _state = MutableStateFlow(ExploreUiState())
     val state: StateFlow<ExploreUiState> = _state.asStateFlow()
 
-    init {
+    init { load() }
+
+    fun reload() { load() }
+
+    private fun load() {
         viewModelScope.launch {
+            _state.value = ExploreUiState(isLoading = true)
             try {
                 repo.ensureLoaded()
                 repo.getCountries().collect { countries ->
@@ -36,7 +41,10 @@ class ExploreViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
-                _state.value = ExploreUiState(isLoading = false, error = e.message)
+                _state.value = ExploreUiState(
+                    isLoading = false,
+                    error = e.message ?: "Erreur de chargement"
+                )
             }
         }
     }

@@ -1,4 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FlagQuest</string>
+
+    <!-- Home -->
+    <string name="home_tagline">Test your knowledge of world flags!</string>
+    <string name="btn_start_quiz">Start Quiz</string>
+    <string name="btn_explore">Explore Countries</string>
+
+    <!-- Quiz Setup -->
+    <string name="setup_title">Quiz Settings</string>
+    <string name="setup_mode">Game mode</string>
+    <string name="setup_mode_flag_to_name">Flag → Country</string>
+    <string name="setup_mode_flag_to_name_desc">A flag is shown, guess the country from 4 choices</string>
+    <string name="setup_mode_name_to_flag">Country → Flag</string>
+    <string name="setup_mode_name_to_flag_desc">A country is shown, find its flag from 4 choices</string>
+    <string name="setup_mode_mixed">Mixed</string>
+    <string name="setup_mode_mixed_desc">Mix of both modes, for experts</string>
+    <string name="setup_regions">Regions</string>
+    <string name="setup_worldwide">🌍  Worldwide</string>
+    <string name="setup_no_selection">No selection = Worldwide</string>
+    <string name="setup_combine">You can combine continents and sub-regions</string>
+    <string name="btn_launch_worldwide">Launch — Worldwide</string>
+    <string name="btn_launch_regions">Launch — %1$d region(s)</string>
+
+    <!-- Quiz -->
+    <string name="quiz_question">Question %1$d / %2$d</string>
+    <string name="quiz_flag_question">Which country does this flag belong to?</string>
+    <string name="quiz_name_question">What is the flag of %1$s?</string>
+    <string name="quiz_correct">✅ Correct!</string>
+    <string name="quiz_wrong">❌ It was %1$s</string>
+    <string name="btn_next">Next</string>
+    <string name="btn_results">See Results</string>
+    <string name="btn_retry">Retry</string>
+
+    <!-- Result -->
+    <string name="result_outstanding">Outstanding!</string>
+    <string name="result_great">Great job!</string>
+    <string name="result_good">Good effort!</string>
+    <string name="result_keep">Keep practicing!</string>
+    <string name="result_score">%1$d%% correct</string>
+    <string name="btn_play_again">Play Again</string>
+    <string name="btn_home">Home</string>
+
+    <!-- Explore -->
+    <string name="explore_title">Explore Countries</string>
+    <string name="explore_search">Search a country or capital...</string>
+    <string name="explore_capital">Capital: %1$s</string>
+
+    <!-- Profile -->
+    <string name="profile_title">My Profile</string>
+    <string name="btn_edit_profile">Edit Profile</string>
+    <string name="btn_sign_out">Sign Out</string>
+    <string name="edit_new_email">New email</string>
+    <string name="edit_new_password">New password</string>
+    <string name="edit_password_hint">Leave empty to keep current</string>
+    <string name="edit_confirm_password">Confirm password</string>
+    <string name="edit_password_mismatch">Passwords do not match</string>
+    <string name="edit_title">Edit Profile</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="update_success">✅ Changes saved</string>
+
+    <!-- Auth -->
+    <string name="auth_sign_in">Sign In</string>
+    <string name="auth_sign_up">Create Account</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_already">Already have an account? Sign in</string>
+    <string name="auth_no_account">No account? Sign up</string>
+
+    <!-- Language -->
+    <string name="language">Language</string>
+    <string name="lang_english">English</string>
+    <string name="lang_french">Français</string>
+    <string name="lang_spanish">Español</string>
 </resources>

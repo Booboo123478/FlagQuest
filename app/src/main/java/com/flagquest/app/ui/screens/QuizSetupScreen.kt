@@ -37,10 +37,10 @@ fun QuizSetupScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Paramètres du Quiz") },
+                title = { Text("Quiz Settings") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, "Retour")
+                        Icon(Icons.Default.ArrowBack, "Back")
                     }
                 }
             )
@@ -54,30 +54,30 @@ fun QuizSetupScreen(
                 .padding(16.dp)
         ) {
             // ── MODE ──────────────────────────────────────────────
-            Text("Mode de jeu", style = MaterialTheme.typography.titleLarge)
+            Text("Game Mode", style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(12.dp))
 
             ModeCard(
                 selected = selectedMode == QuizMode.FLAG_TO_NAME,
                 emoji = "🏳️",
-                title = "Drapeau → Pays",
-                description = "Un drapeau s'affiche, devine le pays parmi 4 choix",
+                title = "Flag → Country",
+                description = "A flag is shown, guess the country from 4 choices",
                 onClick = { selectedMode = QuizMode.FLAG_TO_NAME }
             )
             Spacer(Modifier.height(10.dp))
             ModeCard(
                 selected = selectedMode == QuizMode.NAME_TO_FLAG,
                 emoji = "🗺️",
-                title = "Pays → Drapeau",
-                description = "Un pays s'affiche, retrouve son drapeau parmi 4",
+                title = "Country → Flag",
+                description = "A country is shown, find its flag from 4 choices",
                 onClick = { selectedMode = QuizMode.NAME_TO_FLAG }
             )
             Spacer(Modifier.height(10.dp))
             ModeCard(
                 selected = selectedMode == QuizMode.MIXED,
                 emoji = "🎲",
-                title = "Mixte",
-                description = "Mélange des deux modes, pour les experts",
+                title = "Mixed",
+                description = "Mix of both modes, for experts",
                 onClick = { selectedMode = QuizMode.MIXED }
             )
 
@@ -87,22 +87,22 @@ fun QuizSetupScreen(
 
             // ── RÉGION ────────────────────────────────────────────
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Régions", style = MaterialTheme.typography.titleLarge)
+                Text("Regions", style = MaterialTheme.typography.titleLarge)
                 Spacer(Modifier.width(8.dp))
-                if (selectedRegions.isNotEmpty() || selectedSubregions.isNotEmpty()) {
-                    val total = selectedRegions.size + selectedSubregions.size
+                val totalSelected = selectedRegions.size + selectedSubregions.size
+                if (totalSelected > 0) {
                     AssistChip(
                         onClick = { selectedRegions.clear(); selectedSubregions.clear() },
-                        label = { Text("$total sélection(s)  ✕") }
+                        label = { Text("$totalSelected selected  ✕") }
                     )
                 }
             }
             Spacer(Modifier.height(4.dp))
             Text(
                 text = if (selectedRegions.isEmpty() && selectedSubregions.isEmpty())
-                    "Aucune sélection = Monde entier"
+                    "No selection = Worldwide"
                 else
-                    "Tu peux combiner continents et sous-régions",
+                    "You can combine continents and sub-regions",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
             )
@@ -115,20 +115,24 @@ fun QuizSetupScreen(
                     ContinentSelector(
                         continent = continent,
                         subregions = subregions,
-                        isRegionChecked = continent in selectedRegions,
+                        isRegionChecked = selectedRegions.contains(continent),
                         checkedSubregions = selectedSubregions.toList(),
                         onToggleRegion = {
-                            if (continent in selectedRegions) {
+                            if (selectedRegions.contains(continent)) {
                                 selectedRegions.remove(continent)
-                                // Retire aussi les sous-régions de ce continent
-                                subregions.forEach { selectedSubregions.remove(it) }
+                                subregions.forEach { sub ->
+                                    selectedSubregions.remove(sub)
+                                }
                             } else {
                                 selectedRegions.add(continent)
                             }
                         },
                         onToggleSubregion = { sub ->
-                            if (sub in selectedSubregions) selectedSubregions.remove(sub)
-                            else selectedSubregions.add(sub)
+                            if (selectedSubregions.contains(sub)) {
+                                selectedSubregions.remove(sub)
+                            } else {
+                                selectedSubregions.add(sub)
+                            }
                         }
                     )
                     Spacer(Modifier.height(6.dp))
@@ -138,22 +142,21 @@ fun QuizSetupScreen(
             Spacer(Modifier.height(32.dp))
 
             // ── BOUTON START ──────────────────────────────────────
+            val totalSelected = selectedRegions.size + selectedSubregions.size
             Button(
                 onClick = {
                     onStartQuiz(
                         QuizConfig(
                             mode = selectedMode,
-                            selectedRegions = selectedRegions.toSet(),
-                            selectedSubregions = selectedSubregions.toSet()
+                            selectedRegions = selectedRegions.toHashSet(),
+                            selectedSubregions = selectedSubregions.toHashSet()
                         )
                     )
                 },
                 modifier = Modifier.fillMaxWidth().height(56.dp)
             ) {
-                val label = when {
-                    selectedRegions.isEmpty() && selectedSubregions.isEmpty() -> "Lancer — Monde entier"
-                    else -> "Lancer — ${selectedRegions.size + selectedSubregions.size} région(s)"
-                }
+                val label = if (totalSelected == 0) "Launch — Worldwide"
+                            else "Launch — $totalSelected region(s)"
                 Text(label, style = MaterialTheme.typography.titleLarge)
             }
         }
@@ -204,7 +207,7 @@ private fun ContinentSelector(
     onToggleSubregion: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val hasSubSelection = subregions.any { it in checkedSubregions }
+    val hasSubSelection = subregions.any { checkedSubregions.contains(it) }
     val borderColor = if (isRegionChecked || hasSubSelection)
         MaterialTheme.colorScheme.primary
     else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
@@ -251,7 +254,7 @@ private fun ContinentSelector(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Checkbox(
-                            checked = sub in checkedSubregions,
+                            checked = checkedSubregions.contains(sub),
                             onCheckedChange = { onToggleSubregion(sub) }
                         )
                         Spacer(Modifier.width(4.dp))

@@ -15,7 +15,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.flagquest.app.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.flagquest.app.domain.model.Country
@@ -33,8 +35,7 @@ fun ExploreScreen(
     val grouped: Map<String, Map<String, List<Country>>> = remember(searchQuery, state.countries) {
         val filtered = if (searchQuery.isBlank()) state.countries
         else state.countries.filter {
-            it.name.contains(searchQuery, ignoreCase = true) ||
-            it.capital.contains(searchQuery, ignoreCase = true)
+            it.name.contains(searchQuery, ignoreCase = true)
         }
         filtered
             .sortedBy { it.name }
@@ -46,7 +47,7 @@ fun ExploreScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Explorer les pays") },
+                title = { Text(stringResource(R.string.explore_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, "Retour")
@@ -60,7 +61,7 @@ fun ExploreScreen(
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
-                placeholder = { Text("Rechercher un pays ou une capitale...") },
+                placeholder = { Text(stringResource(R.string.explore_search)) },
                 leadingIcon = { Icon(Icons.Default.Search, null) },
                 singleLine = true,
                 modifier = Modifier
@@ -73,6 +74,22 @@ fun ExploreScreen(
                     Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) { CircularProgressIndicator() }
+
+                state.error != null -> Box(
+                    Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("Erreur : ${state.error}")
+                        Spacer(Modifier.height(12.dp))
+                        Button(onClick = { viewModel.reload() }) { Text("Réessayer") }
+                    }
+                }
+
+                grouped.isEmpty() -> Box(
+                    Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) { Text("Aucun pays trouvé") }
 
                 else -> LazyColumn(
                     contentPadding = PaddingValues(bottom = 16.dp)
@@ -207,7 +224,7 @@ private fun CountryRow(country: Country) {
         Column {
             Text(country.name, style = MaterialTheme.typography.bodyLarge)
             Text(
-                country.capital,
+                stringResource(R.string.explore_capital, country.capital),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )

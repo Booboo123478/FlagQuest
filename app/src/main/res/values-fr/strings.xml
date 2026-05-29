@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FlagQuest</string>
+
+    <!-- Home -->
+    <string name="home_tagline">Teste tes connaissances sur les drapeaux du monde !</string>
+    <string name="btn_start_quiz">Lancer un Quiz</string>
+    <string name="btn_explore">Explorer les Pays</string>
+
+    <!-- Quiz Setup -->
+    <string name="setup_title">Paramètres du Quiz</string>
+    <string name="setup_mode">Mode de jeu</string>
+    <string name="setup_mode_flag_to_name">Drapeau → Pays</string>
+    <string name="setup_mode_flag_to_name_desc">Un drapeau s\'affiche, devine le pays parmi 4 choix</string>
+    <string name="setup_mode_name_to_flag">Pays → Drapeau</string>
+    <string name="setup_mode_name_to_flag_desc">Un pays s\'affiche, retrouve son drapeau parmi 4</string>
+    <string name="setup_mode_mixed">Mixte</string>
+    <string name="setup_mode_mixed_desc">Mélange des deux modes, pour les experts</string>
+    <string name="setup_regions">Régions</string>
+    <string name="setup_worldwide">🌍  Monde entier</string>
+    <string name="setup_no_selection">Aucune sélection = Monde entier</string>
+    <string name="setup_combine">Tu peux combiner continents et sous-régions</string>
+    <string name="btn_launch_worldwide">Lancer — Monde entier</string>
+    <string name="btn_launch_regions">Lancer — %1$d région(s)</string>
+
+    <!-- Quiz -->
+    <string name="quiz_question">Question %1$d / %2$d</string>
+    <string name="quiz_flag_question">Quel pays possède ce drapeau ?</string>
+    <string name="quiz_name_question">Quel est le drapeau de %1$s ?</string>
+    <string name="quiz_correct">✅ Correct !</string>
+    <string name="quiz_wrong">❌ C\'était %1$s</string>
+    <string name="btn_next">Suivant</string>
+    <string name="btn_results">Voir les résultats</string>
+    <string name="btn_retry">Réessayer</string>
+
+    <!-- Result -->
+    <string name="result_outstanding">Exceptionnel !</string>
+    <string name="result_great">Excellent travail !</string>
+    <string name="result_good">Bonne tentative !</string>
+    <string name="result_keep">Continue à t\'entraîner !</string>
+    <string name="result_score">%1$d%% correct</string>
+    <string name="btn_play_again">Rejouer</string>
+    <string name="btn_home">Accueil</string>
+
+    <!-- Explore -->
+    <string name="explore_title">Explorer les pays</string>
+    <string name="explore_search">Rechercher un pays ou une capitale...</string>
+    <string name="explore_capital">Capitale : %1$s</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Mon Profil</string>
+    <string name="btn_edit_profile">Modifier le profil</string>
+    <string name="btn_sign_out">Se déconnecter</string>
+    <string name="edit_new_email">Nouvel email</string>
+    <string name="edit_new_password">Nouveau mot de passe</string>
+    <string name="edit_password_hint">Laisser vide pour ne pas changer</string>
+    <string name="edit_confirm_password">Confirmer le mot de passe</string>
+    <string name="edit_password_mismatch">Les mots de passe ne correspondent pas</string>
+    <string name="edit_title">Modifier le profil</string>
+    <string name="btn_save">Enregistrer</string>
+    <string name="btn_cancel">Annuler</string>
+    <string name="update_success">✅ Modifications enregistrées</string>
+
+    <!-- Auth -->
+    <string name="auth_sign_in">Se connecter</string>
+    <string name="auth_sign_up">Créer un compte</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Mot de passe</string>
+    <string name="auth_already">Déjà un compte ? Se connecter</string>
+    <string name="auth_no_account">Pas de compte ? S\'inscrire</string>
+
+    <!-- Language -->
+    <string name="language">Langue</string>
+    <string name="lang_english">English</string>
+    <string name="lang_french">Français</string>
+    <string name="lang_spanish">Español</string>
+</resources>

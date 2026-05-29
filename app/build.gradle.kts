@@ -84,6 +84,9 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.auth)
 
+    // AppCompat (pour la gestion des langues)
+    implementation(libs.appcompat)
+
     // DataStore
     implementation(libs.datastore.preferences)
 

@@ -9,10 +9,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.flagquest.app.R
 
 @Composable
 fun AuthScreen(
@@ -47,7 +49,7 @@ fun AuthScreen(
             Spacer(Modifier.height(8.dp))
 
             Text(
-                text = "FlagQuest",
+                text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -55,7 +57,8 @@ fun AuthScreen(
             Spacer(Modifier.height(32.dp))
 
             Text(
-                text = if (isSignUp) "Créer un compte" else "Se connecter",
+                text = if (isSignUp) stringResource(R.string.auth_sign_up)
+                       else stringResource(R.string.auth_sign_in),
                 style = MaterialTheme.typography.headlineMedium
             )
 
@@ -64,7 +67,7 @@ fun AuthScreen(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email") },
+                label = { Text(stringResource(R.string.auth_email)) },
                 leadingIcon = { Icon(Icons.Default.Email, null) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
@@ -75,7 +78,7 @@ fun AuthScreen(
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Mot de passe") },
+                label = { Text(stringResource(R.string.auth_password)) },
                 leadingIcon = { Icon(Icons.Default.Lock, null) },
                 visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
@@ -104,7 +107,10 @@ fun AuthScreen(
                 if (state.isLoading) {
                     CircularProgressIndicator(modifier = Modifier.size(20.dp))
                 } else {
-                    Text(if (isSignUp) "Créer le compte" else "Se connecter")
+                    Text(
+                        if (isSignUp) stringResource(R.string.auth_sign_up)
+                        else stringResource(R.string.auth_sign_in)
+                    )
                 }
             }
 
@@ -112,8 +118,8 @@ fun AuthScreen(
 
             TextButton(onClick = { isSignUp = !isSignUp }) {
                 Text(
-                    if (isSignUp) "Déjà un compte ? Se connecter"
-                    else "Pas de compte ? S'inscrire"
+                    if (isSignUp) stringResource(R.string.auth_already)
+                    else stringResource(R.string.auth_no_account)
                 )
             }
         }

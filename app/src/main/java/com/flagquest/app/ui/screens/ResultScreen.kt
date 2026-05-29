@@ -9,8 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.flagquest.app.R
 
 @Composable
 fun ResultScreen(
@@ -27,10 +29,10 @@ fun ResultScreen(
         else -> "📚"
     }
     val message = when {
-        percentage >= 90 -> "Outstanding!"
-        percentage >= 70 -> "Great job!"
-        percentage >= 50 -> "Good effort!"
-        else -> "Keep practicing!"
+        percentage >= 90 -> stringResource(R.string.result_outstanding)
+        percentage >= 70 -> stringResource(R.string.result_great)
+        percentage >= 50 -> stringResource(R.string.result_good)
+        else -> stringResource(R.string.result_keep)
     }
 
     Scaffold { padding ->
@@ -73,7 +75,7 @@ fun ResultScreen(
             )
 
             Text(
-                text = "$percentage% correct",
+                text = stringResource(R.string.result_score, percentage),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
             )
@@ -86,7 +88,7 @@ fun ResultScreen(
             ) {
                 Icon(Icons.Default.Replay, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
-                Text("Play Again")
+                Text(stringResource(R.string.btn_play_again))
             }
 
             Spacer(Modifier.height(16.dp))
@@ -97,7 +99,7 @@ fun ResultScreen(
             ) {
                 Icon(Icons.Default.Home, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
-                Text("Home")
+                Text(stringResource(R.string.btn_home))
             }
         }
     }

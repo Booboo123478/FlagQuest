@@ -7,6 +7,7 @@ import com.flagquest.app.data.local.toEntity
 import com.flagquest.app.data.remote.CountryApiService
 import com.flagquest.app.data.remote.toDomain
 import com.flagquest.app.domain.model.Country
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -43,11 +44,21 @@ class CountryRepository @Inject constructor(
 
     suspend fun ensureLoaded() = withContext(Dispatchers.IO) {
         if (dao.count() == 0) {
-            // Charge d'abord depuis les assets (toujours disponible)
-            loadFromAssets()
+            try {
+                Log.d("CountryRepo", "Loading from assets...")
+                loadFromAssets()
+                Log.d("CountryRepo", "Assets loaded: ${dao.count()} countries")
+            } catch (e: Exception) {
+                Log.e("CountryRepo", "Assets load failed: ${e.message}", e)
+                throw Exception("Impossible de charger les pays depuis les assets.", e)
+            }
+        } else {
+            Log.d("CountryRepo", "DB already has ${dao.count()} countries")
         }
         // Tente une mise à jour réseau en arrière-plan (silencieux)
-        try { refreshFromNetwork() } catch (_: Exception) {}
+        try { refreshFromNetwork() } catch (_: Exception) {
+            Log.d("CountryRepo", "Network refresh skipped (offline)")
+        }
     }
 
     suspend fun getAllCountriesList(): List<Country> = withContext(Dispatchers.IO) {

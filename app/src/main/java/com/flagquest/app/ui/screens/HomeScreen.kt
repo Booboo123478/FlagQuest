@@ -10,9 +10,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.activity.ComponentActivity
 import com.flagquest.app.R
 import com.flagquest.app.utils.LanguageManager
 
@@ -24,6 +26,8 @@ fun HomeScreen(
     onProfile: () -> Unit
 ) {
     var showLanguageMenu by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val activity = context as? ComponentActivity
 
     Scaffold(
         topBar = {
@@ -40,12 +44,12 @@ fun HomeScreen(
                             onDismissRequest = { showLanguageMenu = false }
                         ) {
                             LanguageManager.supportedLanguages.forEach { lang ->
-                                val current = LanguageManager.getCurrentLanguageCode()
+                                val current = LanguageManager.getCurrentLanguageCode(context)
                                 DropdownMenuItem(
                                     text = { Text("${lang.flag}  ${lang.name}") },
                                     onClick = {
                                         showLanguageMenu = false
-                                        LanguageManager.setLanguage(lang.code)
+                                        activity?.let { LanguageManager.setLanguage(it, lang.code) }
                                     },
                                     trailingIcon = {
                                         if (lang.code == current) {

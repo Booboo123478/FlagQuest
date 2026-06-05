@@ -16,8 +16,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.flagquest.app.R
 import com.flagquest.app.domain.model.QuizConfig
 import com.flagquest.app.domain.model.QuizMode
 
@@ -37,7 +39,7 @@ fun QuizSetupScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Quiz Settings") },
+                title = { Text(stringResource(R.string.setup_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, "Back")
@@ -54,30 +56,30 @@ fun QuizSetupScreen(
                 .padding(16.dp)
         ) {
             // ── MODE ──────────────────────────────────────────────
-            Text("Game Mode", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.setup_mode), style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(12.dp))
 
             ModeCard(
                 selected = selectedMode == QuizMode.FLAG_TO_NAME,
                 emoji = "🏳️",
-                title = "Flag → Country",
-                description = "A flag is shown, guess the country from 4 choices",
+                title = stringResource(R.string.setup_mode_flag_to_name),
+                description = stringResource(R.string.setup_mode_flag_to_name_desc),
                 onClick = { selectedMode = QuizMode.FLAG_TO_NAME }
             )
             Spacer(Modifier.height(10.dp))
             ModeCard(
                 selected = selectedMode == QuizMode.NAME_TO_FLAG,
                 emoji = "🗺️",
-                title = "Country → Flag",
-                description = "A country is shown, find its flag from 4 choices",
+                title = stringResource(R.string.setup_mode_name_to_flag),
+                description = stringResource(R.string.setup_mode_name_to_flag_desc),
                 onClick = { selectedMode = QuizMode.NAME_TO_FLAG }
             )
             Spacer(Modifier.height(10.dp))
             ModeCard(
                 selected = selectedMode == QuizMode.MIXED,
                 emoji = "🎲",
-                title = "Mixed",
-                description = "Mix of both modes, for experts",
+                title = stringResource(R.string.setup_mode_mixed),
+                description = stringResource(R.string.setup_mode_mixed_desc),
                 onClick = { selectedMode = QuizMode.MIXED }
             )
 
@@ -87,7 +89,7 @@ fun QuizSetupScreen(
 
             // ── RÉGION ────────────────────────────────────────────
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Regions", style = MaterialTheme.typography.titleLarge)
+                Text(stringResource(R.string.setup_regions), style = MaterialTheme.typography.titleLarge)
                 Spacer(Modifier.width(8.dp))
                 val totalSelected = selectedRegions.size + selectedSubregions.size
                 if (totalSelected > 0) {
@@ -100,9 +102,9 @@ fun QuizSetupScreen(
             Spacer(Modifier.height(4.dp))
             Text(
                 text = if (selectedRegions.isEmpty() && selectedSubregions.isEmpty())
-                    "No selection = Worldwide"
+                    stringResource(R.string.setup_no_selection)
                 else
-                    "You can combine continents and sub-regions",
+                    stringResource(R.string.setup_combine),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
             )
@@ -155,8 +157,8 @@ fun QuizSetupScreen(
                 },
                 modifier = Modifier.fillMaxWidth().height(56.dp)
             ) {
-                val label = if (totalSelected == 0) "Launch — Worldwide"
-                            else "Launch — $totalSelected region(s)"
+                val label = if (totalSelected == 0) stringResource(R.string.btn_launch_worldwide)
+                            else stringResource(R.string.btn_launch_regions, totalSelected)
                 Text(label, style = MaterialTheme.typography.titleLarge)
             }
         }

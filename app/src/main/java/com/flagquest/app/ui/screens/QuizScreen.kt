@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
@@ -14,8 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.flagquest.app.R
 import coil.compose.AsyncImage
 import com.flagquest.app.domain.model.QuizConfig
 import com.flagquest.app.domain.model.QuizMode
@@ -78,6 +82,7 @@ fun QuizScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding)
+                        .verticalScroll(rememberScrollState())
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -93,7 +98,7 @@ fun QuizScreen(
                         // ── FLAG → NAME ─────────────────────────────────────
                         QuizMode.FLAG_TO_NAME -> {
                             Text(
-                                "Quel pays possède ce drapeau ?",
+                                stringResource(R.string.quiz_flag_question),
                                 style = MaterialTheme.typography.titleLarge
                             )
                             Spacer(Modifier.height(20.dp))
@@ -121,7 +126,7 @@ fun QuizScreen(
                         // ── NAME → FLAG ─────────────────────────────────────
                         QuizMode.NAME_TO_FLAG -> {
                             Text(
-                                "Quel est le drapeau de ${question.country.name} ?",
+                                stringResource(R.string.quiz_name_question, question.country.name),
                                 style = MaterialTheme.typography.titleLarge
                             )
                             Spacer(Modifier.height(20.dp))
@@ -149,13 +154,14 @@ fun QuizScreen(
                         else -> {}
                     }
 
-                    Spacer(Modifier.weight(1f))
+                    Spacer(Modifier.height(24.dp))
 
                     if (state.selectedAnswer != null) {
                         // Feedback
                         val isCorrect = state.selectedAnswer == question.correctAnswer
                         Text(
-                            text = if (isCorrect) "✅ Correct !" else "❌ C'était ${question.country.name}",
+                            text = if (isCorrect) stringResource(R.string.quiz_correct)
+                                   else stringResource(R.string.quiz_wrong, question.country.name),
                             style = MaterialTheme.typography.titleLarge,
                             color = if (isCorrect) Color(0xFF4CAF50) else MaterialTheme.colorScheme.error
                         )
@@ -165,7 +171,9 @@ fun QuizScreen(
                             modifier = Modifier.fillMaxWidth().height(52.dp)
                         ) {
                             Text(
-                                if (state.currentIndex + 1 < state.questions.size) "Suivant" else "Voir les résultats"
+                                if (state.currentIndex + 1 < state.questions.size)
+                                    stringResource(R.string.btn_next)
+                                else stringResource(R.string.btn_results)
                             )
                         }
                     }
